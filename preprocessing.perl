@@ -65,7 +65,7 @@ print STDERR "POS tagging mt_dataset\n";
 
 my $dataset_tmp_h = "$root_outdir/h_dataset_tmp.txt";
 print STDERR "POS tagging h_dataset\n";
-`java -mx300m -cp \"$pos_tagger_location/stanford-postagger-3.6.0.jar:$pos_tagger_location/lib/*\" edu.stanford.nlp.tagger.maxent.MaxentTagger -model $pos_tagger_location/models/spanish-distsim.tagger -textFile $dataset_h  > $dataset_tmp_h`
+`java -mx300m -cp \"$pos_tagger_location/stanford-postagger-3.6.0.jar:$pos_tagger_location/lib/*\" edu.stanford.nlp.tagger.maxent.MaxentTagger -model $pos_tagger_location/models/spanish-distsim.tagger -textFile $dataset_h  > $dataset_tmp_h`;
 ##########################################
 
 sub retrieve_text_and_tags_from_tagged_text {
