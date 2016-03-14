@@ -60,12 +60,12 @@ close H_DATASET;
 my $pos_tagger_location = "/afs/l2f/home/alopes/Downloads/stanford-postagger-full-2015-12-09";
 my $dataset_tmp_mt = "$root_outdir/mt_dataset_tmp.txt";
 print STDERR "POS tagging mt_dataset\n";
-`java -mx300m -cp \"$pos_tagger_location/stanford-postagger-3.6.0.jar:$pos_tagger_location/lib/*\" edu.stanford.nlp.tagger.maxent.MaxentTagger -model $pos_tagger_location/models/spanish-distsim.tagger -textFile $dataset_mt  > $dataset_tmp_mt`;
+`java -mx1024m -cp \"$pos_tagger_location/stanford-postagger-3.6.0.jar:$pos_tagger_location/lib/*\" edu.stanford.nlp.tagger.maxent.MaxentTagger -model $pos_tagger_location/models/spanish-distsim.tagger -textFile $dataset_mt  > $dataset_tmp_mt`;
 
 
 my $dataset_tmp_h = "$root_outdir/h_dataset_tmp.txt";
 print STDERR "POS tagging h_dataset\n";
-`java -mx300m -cp \"$pos_tagger_location/stanford-postagger-3.6.0.jar:$pos_tagger_location/lib/*\" edu.stanford.nlp.tagger.maxent.MaxentTagger -model $pos_tagger_location/models/spanish-distsim.tagger -textFile $dataset_h  > $dataset_tmp_h`;
+`java -mx1024m -cp \"$pos_tagger_location/stanford-postagger-3.6.0.jar:$pos_tagger_location/lib/*\" edu.stanford.nlp.tagger.maxent.MaxentTagger -model $pos_tagger_location/models/spanish-distsim.tagger -textFile $dataset_h  > $dataset_tmp_h`;
 ##########################################
 
 sub retrieve_text_and_tags_from_tagged_text {
