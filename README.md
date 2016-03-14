@@ -6,3 +6,8 @@ As the suggested bibliography suggests, using POS LM and word LM achieve a very 
 
 The TAGS generated using stanford-postagger are the ones from AnCora. Yes, it is wierd. stanford-postagger looks at the first 2-4 codes of Ancora convention, it is sufficient.
 
+Maybe use: http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/?
+
+## Evaluation
+10-fold cross evaluation. Measurement of accuracy, precision and recall. In addition, we will try to measure the BLEU score.
+
