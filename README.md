@@ -35,3 +35,11 @@ Scripts:
 ##Bibliography
 * [1](http://www.aclweb.org/anthology/P13-1157) Arase, Yuki, and Ming Zhou. "Machine Translation Detection from Monolingual Web-Text."
 * [2](http://www.fit.vutbr.cz/research/groups/speech/publi/2010/mikolov_interspeech2010_IS100722.pdf) Mikolov, Tomas, et al. "Recurrent neural network based language model." INTERSPEECH. Vol. 2. 20100.
+
+
+##TODO
++ train-rnnlm:  finish script
++ extract-features: script
++ create-csv: script
++ classify: script
+
