@@ -45,11 +45,11 @@ def dataset_to_files(dataset, train_idx, val_idx, dest_train, dest_val):
 
     with open(dest_train, 'w') as f_train:
         for idx in train_idx:
-            f_train.write(dataset[idx])
+            f_train.write(dataset[idx]+'\n')
 
     with open(dest_val, 'w') as f_val:
         for idx in val_idx:
-            f_val.write(dataset[idx])
+            f_val.write(dataset[idx]+'\n')
 
 
 h, mt = read_datasets('processed_dataset/h_dataset.txt', 'processed_dataset/mt_dataset.txt')
