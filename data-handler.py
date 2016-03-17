@@ -45,19 +45,44 @@ def dataset_to_files(dataset, train_idx, val_idx, dest_train, dest_val):
 
     with open(dest_train, 'w') as f_train:
         for idx in train_idx:
-            f_train.write(dataset[idx]+'\n')
+            f_train.write(dataset[idx] + '\n')
 
     with open(dest_val, 'w') as f_val:
         for idx in val_idx:
-            f_val.write(dataset[idx]+'\n')
+            f_val.write(dataset[idx] + '\n')
 
-
+print("Reading h and mt datasets")
 h, mt = read_datasets('processed_dataset/h_dataset.txt', 'processed_dataset/mt_dataset.txt')
 t_h, v_h, t_mt, v_mt = divide_dataset_idx(h, mt)
+
+print("Writiing h datasets: train and valid")
 dataset_to_files(h, t_h, v_h, 'data/train_h.txt', 'data/validation_h.txt')
+print("Writiing mt datasets: train and valid")
 dataset_to_files(mt, t_mt, v_mt, 'data/train_mt.txt', 'data/validation_mt.txt')
 
+print("Reading h and mt POS datasets")
 h_pos, mt_pos = read_datasets('processed_dataset/h_dataset_pos.txt', 'processed_dataset/mt_dataset_pos.txt')
 t_h_pos, v_h_pos, t_mt_pos, v_mt_pos = divide_dataset_idx(h_pos, mt_pos)
+
+print("Writiing h POS datasets: train and valid")
 dataset_to_files(h_pos, t_h_pos, v_h_pos, 'data/train_h_pos.txt', 'data/validation_h_pos.txt')
+print("Writiing mt POS datasets: train and valid")
 dataset_to_files(mt_pos, t_mt_pos, v_mt_pos, 'data/train_mt_pos.txt', 'data/validation_mt_pos.txt')
+
+print("Saving indexes")
+with open('data/train_mt_idx.txt', 'w') as index_train:
+    for idx in t_mt:
+        index_train.write('{}\n'.format(idx))
+
+with open('data/train_h_idx.txt', 'w') as index_train:
+    for idx in t_h:
+        index_train.write('{}\n'.format(idx))
+
+with open('data/valid_mt_idx.txt', 'w') as index_valid:
+    for idx in v_mt:
+        index_valid.write('{}\n'.format(idx))
+
+with open('data/valid_h_idx.txt', 'w') as index_valid:
+    for idx in v_h:
+        index_valid.write('{}\n'.format(idx))
+
