@@ -5,10 +5,12 @@ import sys
 import subprocess
 
 
-assert len(sys.argv) == 4
+assert len(sys.argv) == 6
 file_path = sys.argv[1]
 file_path_pos = sys.argv[2]
-h_mt = sys.argv[2]
+src = sys.argv[3]
+other = sys.argv[4]
+train_test = sys.argv[5]
 
 def read_datasets(file_path_local, file_path_local_pos):
 
@@ -28,11 +30,13 @@ def read_datasets(file_path_local, file_path_local_pos):
     return dataset, dataset_pos
 
 
-def dataset_to_files(dataset, destination):
+def datasets_to_file(dataset, dataset2, dataset_pos, dataset_pos2, header, destination):
+#def datasets_to_file(dataset, dataset_pos, header, destination):
 
     with open(destination, 'w') as f:
-        for line in dataset:
-            f.write(line + '\n')
+        f.write(header + '\n')
+        for idx in range(len(dataset)):
+            f.write(dataset[idx] + ',' + dataset2[idx] + ',' + dataset_pos[idx] + ',' + dataset_pos2[idx] + '\n')
 
 
 print("Reading datasets:" + file_path + "," + file_path_pos)
@@ -40,17 +44,83 @@ dataset, dataset_pos = read_datasets(file_path, file_path_pos)
 
 print("Running rnnlm tool to obtain train scores")
 
+features = range(len(dataset))
+features_pos = range(len(dataset_pos))
+features_2 = range(len(dataset))
+features_pos_2 = range(len(dataset_pos))
+
+#TODO length of sentence
+
 for idx in range(len(dataset)):
     sentence = dataset[idx].replace('"', '\\\"')
     sentence = sentence.replace("'", "\\\'")
-    
-    command = ['/bin/zsh', 'time ./rnnlm-0.4b/rnnlm -model models/model_{} -test =(echo {})'.format(h_mt, dataset[idx])]
+    import tempfile
 
-    print(' '.join(command))
-    #proc = subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    #stdout_value = proc.communicate()[0]
+    ############### For me vs me ############### 
+    with tempfile.NamedTemporaryFile() as temp:
+        temp.write(dataset[idx])
+        temp.flush()    
+        #temp.close()    
+        command = 'time ./rnnlm-0.4b/rnnlm -rnnlm models/model_{} -test {}'.format(src, temp.name)
+#        print(command)
+        proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+        stdout_value = proc.communicate()[0]
+        line = ""
+        for char in stdout_value:
+            line += char
+        
+        log_probability = line.split('\n')[3].split(':')[1]
+        features[idx] = log_probability
 
-    #for line in stdout_value:
-        #print(line)
+        
+    with tempfile.NamedTemporaryFile() as temp:
+        temp.write(dataset_pos[idx])
+        temp.flush()    
+        #temp.close()    
+        command = 'time ./rnnlm-0.4b/rnnlm -rnnlm models/model_{}_pos -test {}'.format(src, temp.name)
+#        print(command)
+        proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+        stdout_value = proc.communicate()[0]
+        line = ""
+        for char in stdout_value:
+            line += char
+        
+        log_probability = line.split('\n')[3].split(':')[1]
+        features_pos[idx] = log_probability
 
+    ############### For me vs other ############### 
+    with tempfile.NamedTemporaryFile() as temp:
+        temp.write(dataset[idx])
+        temp.flush()    
+        #temp.close()    
+        command = 'time ./rnnlm-0.4b/rnnlm -rnnlm models/model_{} -test {}'.format(other, temp.name)
+#        print(command)
+        proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+        stdout_value = proc.communicate()[0]
+        line = ""
+        for char in stdout_value:
+            line += char
+        
+        log_probability = line.split('\n')[3].split(':')[1]
+        features_2[idx] = log_probability
+
+        
+    with tempfile.NamedTemporaryFile() as temp:
+        temp.write(dataset_pos[idx])
+        temp.flush()    
+        #temp.close()    
+        command = 'time ./rnnlm-0.4b/rnnlm -rnnlm models/model_{}_pos -test {}'.format(other, temp.name)
+#        print(command)
+        proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+        stdout_value = proc.communicate()[0]
+        line = ""
+        for char in stdout_value:
+            line += char
+
+        log_probability = line.split('\n')[3].split(':')[1]
+        features_pos_2[idx] = log_probability
+
+file_to_write = 'features/{}_scores_feat_{}'.format(train_test, src)
+header = 'f_wh, f_wmt, f_posh, f_posmt'
+datasets_to_file(features, features_2, features_pos, features_pos_2, header, file_to_write)
 
