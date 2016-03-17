@@ -1,0 +1,27 @@
+class_mode: categorical
+layers:
+- W_constraint: null
+  W_regularizer: null
+  activation: relu
+  activity_regularizer: null
+  b_constraint: null
+  b_regularizer: null
+  cache_enabled: true
+  custom_name: dense
+  init: uniform
+  input_dim: 5
+  input_shape: !!python/tuple [5]
+  name: Dense
+  output_dim: 64
+  trainable: true
+- {cache_enabled: true, custom_name: dropout, name: Dropout, p: 0.2, trainable: true}
+- {W_constraint: null, W_regularizer: null, activation: relu, activity_regularizer: null,
+  b_constraint: null, b_regularizer: null, cache_enabled: true, custom_name: dense,
+  init: glorot_uniform, input_dim: null, name: Dense, output_dim: 64, trainable: true}
+- {cache_enabled: true, custom_name: dropout, name: Dropout, p: 0.2, trainable: true}
+- {W_constraint: null, W_regularizer: null, activation: sigmoid, activity_regularizer: null,
+  b_constraint: null, b_regularizer: null, cache_enabled: true, custom_name: dense,
+  init: glorot_uniform, input_dim: null, name: Dense, output_dim: 1, trainable: true}
+loss: binary_crossentropy
+name: Sequential
+optimizer: {epsilon: 1.0e-06, lr: 0.0010000000474974513, name: RMSprop, rho: 0.8999999761581421}
