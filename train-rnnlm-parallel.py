@@ -4,10 +4,10 @@ import sys
 import subprocess
 
 
-assert len(sys.argv) == 4
+assert len(sys.argv) == 3
 file_path = sys.argv[1]
 h_mt = sys.argv[2]
-test_path = sys.argv[3]
+#test_path = sys.argv[3]
 
 def read_dataset(file_path_local):
 
@@ -45,9 +45,11 @@ print(command)
 proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 stdout_value = proc.communicate()[0]
 
-for line in stdout_value:
-    print(line)
+log_file = "log_file_{}.txt".format(h_mt)
 
+with open(log_file, 'w') as log:
+    for line in stdout_value:
+        f.write(line+'\n')
 
 
 commad = 'ngram-count -text {} -order 5 -lm models/templm_{} -kndiscount -interpolate -gt3min 1 -gt4min 1'.format(file_path, h_mt)
