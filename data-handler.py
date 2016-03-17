@@ -62,12 +62,11 @@ dataset_to_files(mt, t_mt, v_mt, 'data/train_mt.txt', 'data/validation_mt.txt')
 
 print("Reading h and mt POS datasets")
 h_pos, mt_pos = read_datasets('processed_dataset/h_dataset_pos.txt', 'processed_dataset/mt_dataset_pos.txt')
-t_h_pos, v_h_pos, t_mt_pos, v_mt_pos = divide_dataset_idx(h_pos, mt_pos)
 
 print("Writiing h POS datasets: train and valid")
-dataset_to_files(h_pos, t_h_pos, v_h_pos, 'data/train_h_pos.txt', 'data/validation_h_pos.txt')
+dataset_to_files(h_pos, t_h, v_h, 'data/train_h_pos.txt', 'data/validation_h_pos.txt')
 print("Writiing mt POS datasets: train and valid")
-dataset_to_files(mt_pos, t_mt_pos, v_mt_pos, 'data/train_mt_pos.txt', 'data/validation_mt_pos.txt')
+dataset_to_files(mt_pos, t_mt, v_mt, 'data/train_mt_pos.txt', 'data/validation_mt_pos.txt')
 
 print("Saving indexes")
 with open('data/train_mt_idx.txt', 'w') as index_train:
