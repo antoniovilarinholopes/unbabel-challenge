@@ -58,6 +58,8 @@ def mlp_classifier(X, y, val=None, n_epochs=20, bsize=5):
 
     model.compile(loss='binary_crossentropy', optimizer='rmsprop')
 
+    #TODO: Implement EarlyStopping
+
     if val is None:
         model.fit(X, y, nb_epoch=n_epochs, batch_size=bsize, verbose=1, validation_split=0.2, shuffle=True)
     else:
