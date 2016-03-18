@@ -61,6 +61,7 @@ for idx in range(len(dataset)):
         temp.write(dataset[idx])
         temp.flush()    
         command = './rnnlm-0.4b/rnnlm -rnnlm models/model_{} -test {}'.format(src, temp.name)
+
         proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         stdout_value = proc.communicate()[0]
         
@@ -71,6 +72,7 @@ for idx in range(len(dataset)):
         temp.write(dataset_pos[idx])
         temp.flush()    
         command = './rnnlm-0.4b/rnnlm -rnnlm models/model_{}_pos -test {}'.format(src, temp.name)
+
         proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         stdout_value = proc.communicate()[0]
 
