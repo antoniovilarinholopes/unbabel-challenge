@@ -1,6 +1,7 @@
 import csv
 import os
 import numpy as np
+import sys
 from sklearn import svm
 from keras.models import Sequential, model_from_yaml
 from keras.layers import Dropout, Dense
@@ -87,8 +88,8 @@ def mlp_predict(X, bsize=5):
     return predictions
 
 
-
-features, tags = open_csv('data/feature_test.csv') # Fake data for now
+path = sys.argv[1]
+features, tags = open_csv(path) # Fake data for now
 mlp_classifier(features, tags)
 
 

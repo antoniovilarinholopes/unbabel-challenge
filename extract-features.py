@@ -61,64 +61,57 @@ for idx in range(len(dataset)):
         temp.write(dataset[idx])
         temp.flush()    
         #temp.close()    
-        command = 'time ./rnnlm-0.4b/rnnlm -rnnlm models/model_{} -test {}'.format(src, temp.name)
+        command = './rnnlm-0.4b/rnnlm -rnnlm models/model_{} -test {}'.format(src, temp.name)
 #        print(command)
         proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         stdout_value = proc.communicate()[0]
-        line = ""
-        for char in stdout_value:
-            line += char
         
-        log_probability = line.split('\n')[3].split(':')[1]
+        log_probability = stdout_value.split('\n')[3].split(':')[1]
         features[idx] = log_probability
-
+#        print("ME VS ME:" + features[idx])
         
     with tempfile.NamedTemporaryFile() as temp:
         temp.write(dataset_pos[idx])
         temp.flush()    
         #temp.close()    
-        command = 'time ./rnnlm-0.4b/rnnlm -rnnlm models/model_{}_pos -test {}'.format(src, temp.name)
+        command = './rnnlm-0.4b/rnnlm -rnnlm models/model_{}_pos -test {}'.format(src, temp.name)
 #        print(command)
         proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         stdout_value = proc.communicate()[0]
-        line = ""
-        for char in stdout_value:
-            line += char
-        
-        log_probability = line.split('\n')[3].split(':')[1]
+
+        log_probability = stdout_value.split('\n')[3].split(':')[1]
         features_pos[idx] = log_probability
+#        print("ME VS ME POS:" + features_pos[idx])
 
     ############### For me vs other ############### 
     with tempfile.NamedTemporaryFile() as temp:
         temp.write(dataset[idx])
         temp.flush()    
         #temp.close()    
-        command = 'time ./rnnlm-0.4b/rnnlm -rnnlm models/model_{} -test {}'.format(other, temp.name)
+        command = './rnnlm-0.4b/rnnlm -rnnlm models/model_{} -test {}'.format(other, temp.name)
 #        print(command)
         proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         stdout_value = proc.communicate()[0]
-        line = ""
-        for char in stdout_value:
-            line += char
-        
-        log_probability = line.split('\n')[3].split(':')[1]
+ 
+        log_probability = stdout_value.split('\n')[3].split(':')[1]
         features_2[idx] = log_probability
+#        print("ME VS OTHER:" + features_2[idx])
 
         
     with tempfile.NamedTemporaryFile() as temp:
         temp.write(dataset_pos[idx])
         temp.flush()    
         #temp.close()    
-        command = 'time ./rnnlm-0.4b/rnnlm -rnnlm models/model_{}_pos -test {}'.format(other, temp.name)
+        command = './rnnlm-0.4b/rnnlm -rnnlm models/model_{}_pos -test {}'.format(other, temp.name)
 #        print(command)
         proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         stdout_value = proc.communicate()[0]
-        line = ""
-        for char in stdout_value:
-            line += char
-
-        log_probability = line.split('\n')[3].split(':')[1]
+ 
+        log_probability = stdout_value.split('\n')[3].split(':')[1]
         features_pos_2[idx] = log_probability
+#        print("ME VS OTHER POS:" + features_pos_2[idx])
+
+#    print("Current index {}".format(idx))
 
 file_to_write = 'features/{}_scores_feat_{}'.format(train_test, src)
 header = 'f_wh, f_wmt, f_posh, f_posmt'

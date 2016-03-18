@@ -49,7 +49,7 @@ log_file = "log_file_{}.txt".format(h_mt)
 
 with open(log_file, 'w') as log:
     for line in stdout_value:
-        f.write(line+'\n')
+        log.write(line+'\n')
 
 
 #commad = 'ngram-count -text {} -order 5 -lm models/templm_{} -kndiscount -interpolate -gt3min 1 -gt4min 1'.format(file_path, h_mt)
