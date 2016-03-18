@@ -2,34 +2,35 @@
 This challenge consists of given a sentence detect whether it is from a human or from MT. The approach we follow is similar to the one in [1].
 
 ## Our solution
-As the suggested bibliography suggests, using POS LM and word LM achieve a very high accuracy. Our method is based on this assumption. Additionally, function words might be considered and we will use generic features: length of the sentence, number of prepositions, n of prepositions repeated. After, we might consider syntatic features.
-
-The TAGS generated using stanford-postagger are the ones from AnCora[http://nlp.lsi.upc.edu/freeling/doc/tagsets/tagset-es.html]. Yes, it is wierd. stanford-postagger looks at the first 2-4 codes of Ancora convention, it is sufficient.
-
-Maybe use: http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/?
+Considering that the approach in [1] had sucess in the task we were presented, we decide that the best solution (in the time given) was to train different language models as suggested in the original article. Therefore, we use the scores of the language models as features (see __Method__ for more). To train the LMs we used the rnnlm toolkit by Mikolov [2] and our LMs are: human words lm, mt words lm, human pos lm, and mt pos lm. The POS tagger we used was the stanford POS tagger, where the tags are the ones from AnCora [http://nlp.lsi.upc.edu/freeling/doc/tagsets/tagset-es.html]. Note that in order to achieve the max precision of correct tags the stanford-postagger looks at the first 2-4 codes of Ancora convention. However, this method is sufficient for the task we consider.
 
 #Method
-+ First we preprocess the dataset: divide in machine-translated and human datasets, then we use stanford-postagger with the spanish distsim model to get the POS tags, and, finally, we generate a processed file with the tags from the previous step.
-+ After the preprocessing, we train 4 language models using RNNLM toolkit [1], following then the LM features as described by the suggested bibliography. We decided to use RNNLM because due to the power of RNNs when modelling sequences arbitrarily long, we find it reasonable to use this LM instead of the others. Therefore, our features consist of 4 scores: f_wh, f_wmt, f_posh, fposmt; the length of the sentence.
-+ Finally, we train our models using this information, testing the test set against these features. To evaluate we use the methods described in __Evaluation__.
++ First we preprocess the dataset: divide into machine-translated and human datasets; then we use stanford-postagger with the spanish distsim model to get the POS tags, and, finally, we generate a processed file with the tags from the previous step. In this step, we shuffle the indexes of the sentences in the datasets in order to avoid, further, the overfit problem.
++ After the preprocessing, we divide further the datasets into train(80%), test(20%) and valid(20% of train set)
++ we train 4 language models using RNNLM toolkit [2], the LM features are the ones described in the suggested bibliography. We decided to use RNNLM due to the power of RNNs when modelling sequences arbitrarily long, we find reasonable to use this LM instead of the others. Therefore, our features consist of 4 scores: f\_wh, f\_wmt, f\_posh, f\_posmt; the length of the sentence.
++ Finally, we train our models using these scores and test. Our models are built using multi-layer perceptrons in a deep architecture. In our models we also use standard normalization. In addition, the shuffling method previously mentioned andthe  dropout technique in the hidden layers to avoid overfitting. To evaluate the models, we use the methods described in __Evaluation__.
 
 #Experimental setup
 
 Folders:
 + models: language models, h\_lm, mt\_lm, h\_pos\_lm, mt\_pos\_lm .
 + data: dataset divisions for h, mt, h\_pos, mt\_pos. TODO, describe division.
++ features: features files.
 + rnnlm-04b: rnnlm tool
-+ processed-dataset. division between h and mt from original training set.
++ processed-dataset. division between h and mt from original training set. 
 
 Scripts:
-+ data-handler
-+ train-rnnlm-parallel
-+ classify
-+ preprocessing
++ data-handler.py
++ train-rnnlm-parallel.py
++ classify.py
++ preprocessing.perl
++ generate-csv.perl
++ extract-features.py
++ extract-features-parallel.py
 
 
 ## Evaluation
-10-fold cross evaluation. Measurement of accuracy, precision and recall. In addition, we will try to measure the BLEU score.
+We evaluate our models using the standard measurements accuracy, precision and recall.
 
 
 ##Bibliography
@@ -38,8 +39,6 @@ Scripts:
 
 
 ##TODO
-+ train-rnnlm:  finish script
-+ extract-features: script
-+ create-csv: script
-+ classify: script
++ Train our mlp/svm models
++ Test our models with test set
 
