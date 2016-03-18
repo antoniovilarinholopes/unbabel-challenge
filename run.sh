@@ -77,9 +77,9 @@ fi
 ############################################
 ## Classify
 ############################################
-if [ "$FIRST_STEP" -le 5 ]
-  then
-    python3 classify.py "features/features.csv"
-fi
+#if [ "$FIRST_STEP" -le 5 ]
+#  then
+#    python3 classify.py "features/features_test.csv"
+#fi
 ############################################
 

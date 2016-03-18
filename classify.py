@@ -34,48 +34,33 @@ def normalize(a):
 
     return c
 
+def evaluate_model(tags, predictions):
+    t_p = 0
+    t_n = 0
+    f_p = 0
+    f_n = 0
+
+    for idx in range(len(tags)):
+        if(tags[idx] == 1 && predictions[idx] == 1):
+            t_p = t_p + 1
+        elif(tags[idx] == 0 && predictions[idx] == 0):
+            t_n = t_n + 1
+        elif(tags[idx] == 0 && predictions[idx] == 1):
+            f_p = f_p + 1
+        else:
+            f_n = f_n + 1
+
+
+     precision = t_p / (t_p + f_p)
+     accuracy = (t_p + t_n) / (t_p + t_n + f_p + f_n)
+     recall = t_p / (t_p + f_n) 
+     
+     print("Precision: {}".format(precision))
+     print("Accuracy: {]".format(accuracy))
+     print("Recall: {}".format(recall))
+
 
 # CLASSIFIERS
-
-def svm_classifier(X, y):
-    # Input Format should be X : [n_samples, n_features] , y : [n_samples, 1]
-
-    classifier = svm.SVC(verbose=1)
-    classifier.fit(X, y)
-
-
-def mlp_classifier(X, y, val=None, n_epochs=20, bsize=5):
-    '''
-    :param X: numpy array [n_samples, n_features] (input features)
-    :param y: numpy array [n_samples, 1] (tags)
-    :param val: tuple of two numpy arrays (X, y) corrreponding to the validation data
-    :return:
-    '''
-    # Uses Keras Library (see keras.io for more details)
-    # Input Format should be X : [n_samples, n_features] , y : [n_samples, 1]
-    # ATTENTION: Inputs should be normalized for better results!!!
-
-    model = Sequential()
-    model.add(Dense(64, input_dim=X.shape[1], init='uniform', activation='relu'))
-    model.add(Dropout(0.2))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.2))
-    model.add(Dense(1, activation='sigmoid'))
-
-    model.compile(loss='binary_crossentropy', optimizer='rmsprop')
-
-    #TODO: Implement EarlyStopping
-
-    if val is None:
-        model.fit(X, y, nb_epoch=n_epochs, batch_size=bsize, verbose=1, validation_split=0.2, shuffle=True)
-    else:
-        assert isinstance(val, tuple)
-        model.fit(X, y, nb_epoch=n_epochs, batch_size=bsize, verbose=1, validation_data=val, shuffle=True)
-
-    yaml_string = model.to_yaml()
-    open('models/mlp_architecture.yaml', 'w').write(yaml_string)
-    model.save_weights('models/mlp_model_weights.h5')
-
 
 def mlp_predict(X, bsize=5):
     '''
@@ -95,6 +80,10 @@ def mlp_predict(X, bsize=5):
 
 path = sys.argv[1]
 features, tags = open_csv(path) # Fake data for now
-mlp_classifier(features, tags)
+predictions = mlp_predict(features)
+
+evaluate_model(tags, predictions)
+
+
 
 
