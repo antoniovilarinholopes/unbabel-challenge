@@ -52,5 +52,5 @@ with open(log_file, 'w') as log:
         f.write(line+'\n')
 
 
-commad = 'ngram-count -text {} -order 5 -lm models/templm_{} -kndiscount -interpolate -gt3min 1 -gt4min 1'.format(file_path, h_mt)
-command = 'ngram -lm models/templm_{} -order 5 -ppl {} -debug 2 > models/temp_{}.ppl' .format(h_mt, test_path, h_mt)
+#commad = 'ngram-count -text {} -order 5 -lm models/templm_{} -kndiscount -interpolate -gt3min 1 -gt4min 1'.format(file_path, h_mt)
+#command = 'ngram -lm models/templm_{} -order 5 -ppl {} -debug 2 > models/temp_{}.ppl' .format(h_mt, test_path, h_mt)
