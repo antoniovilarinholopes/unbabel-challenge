@@ -25,9 +25,14 @@ def open_csv(file_path):
     return features, tags
 
 
-#TODO: def normalize(X):
+def normalize(a):
 
+    mean = a.mean(1, keepdims=True)
+    std = a.std(1, keepdims=True)
+    b = np.subtract(a, mean)
+    c = np.divide(b, std)
 
+    return c
 
 
 # CLASSIFIERS
