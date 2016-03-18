@@ -48,11 +48,13 @@ fi
 
 if [ "$FIRST_STEP" -eq 3 ]
   then
+    mkdir -p "features"
     datasets=("data/train_h.txt" "data/train_mt.txt" "data/train_h_pos.txt" "data/train_mt_pos.txt")
     h_mt=("h" "mt" "h_pos" "mt_pos")
 
-    python extract-features.py ${datasets[0]} ${datasets[2]} ${h_mt[0]}
-    #python extract-features.py ${datasets[1]} ${datasets[3]} ${h_mt[1]}
+    python extract-features-parallel.py ${datasets[0]} ${h_mt[0]} ${h_mt[1]} "train" "w"
+    #python extract-features.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "train"
+    #python extract-features.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "train"
 
     #generate-csv.perl
 fi
@@ -64,6 +66,7 @@ fi
 ############################################
 if [ "$FIRST_STEP" -eq 4 ]
   then
+    echo "Meh"
     #classify.py
 fi
 ############################################
