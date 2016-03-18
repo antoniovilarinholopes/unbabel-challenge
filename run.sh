@@ -66,11 +66,20 @@ fi
 
 
 ############################################
-## Classify: SVM
+## Build model: MLP
 ############################################
 if [ "$FIRST_STEP" -le 4 ]
   then
-    python classify.py "features/features.csv"
+    python3 build-model.py "features/features.csv"
+fi
+############################################
+
+############################################
+## Build model: MLP
+############################################
+if [ "$FIRST_STEP" -le 5 ]
+  then
+    python3 classify.py "features/features.csv"
 fi
 ############################################
 

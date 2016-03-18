@@ -2,6 +2,7 @@ import csv
 import os
 import numpy as np
 import sys
+import random
 from sklearn import svm
 from keras.models import Sequential, model_from_yaml
 from keras.layers import Dropout, Dense
@@ -18,6 +19,10 @@ def open_csv(file_path):
         for row in csv_reader:
             raw_data.append(row)
 
+    raw_data = raw_data[1:]
+    random.shuffle(raw_data)
+    random.shuffle(raw_data)
+    random.shuffle(raw_data)
     raw_data = np.array(raw_data)
     features = raw_data[:, :-1]
     tags = raw_data[:, -1]
