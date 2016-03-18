@@ -48,7 +48,7 @@ for idx in range(len(dataset)):
     #sentence = dataset[idx].replace('"', '\\\"')
     #sentence = sentence.replace("'", "\\\'")
     import tempfile
-
+    
     ############### For me vs me ############### 
     with tempfile.NamedTemporaryFile() as temp:
         temp.write(dataset[idx])
@@ -79,6 +79,7 @@ for idx in range(len(dataset)):
         
         log_probability = line.split('\n')[3].split(':')[1]
         features_2[idx] = log_probability
+    print("Current index {}".format(idx))
 
 file_to_write = 'features/{}_scores_feat_{}'.format(train_test, src)
 header = 'f_{}, f_{}'.format(score + src, score + other)

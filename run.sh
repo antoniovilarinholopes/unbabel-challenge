@@ -15,7 +15,7 @@ ROOT_DIR=$3
 ## Preprocessing dataset.
 ############################################
 
-if [ "$FIRST_STEP" -eq 1 ]
+if [ "$FIRST_STEP" -le 1 ]
   then
     ./preprocessing.perl $TRAINING_SET $ROOT_DIR
     python data-handler.py 
@@ -27,7 +27,7 @@ fi
 ## Training RNNLM. TODO Use condor?
 ############################################
 
-if [ "$FIRST_STEP" -eq 2 ]
+if [ "$FIRST_STEP" -le 2 ]
   then
     mkdir -p "models"
     datasets=("data/train_h.txt" "data/train_mt.txt" "data/train_h_pos.txt" "data/train_mt_pos.txt")
@@ -46,17 +46,21 @@ fi
 ## Extract features, generate CSV file
 ############################################
 
-if [ "$FIRST_STEP" -eq 3 ]
+if [ "$FIRST_STEP" -le 3 ]
   then
     mkdir -p "features"
     datasets=("data/train_h.txt" "data/train_mt.txt" "data/train_h_pos.txt" "data/train_mt_pos.txt")
     h_mt=("h" "mt" "h_pos" "mt_pos")
 
-    python extract-features-parallel.py ${datasets[0]} ${h_mt[0]} ${h_mt[1]} "train" "w"
-    #python extract-features.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "train"
-    #python extract-features.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "train"
+#    python extract-features-parallel.py ${datasets[0]} ${h_mt[0]} ${h_mt[1]} "train" "w"
+#    python extract-features-parallel.py ${datasets[1]} ${h_mt[1]} ${h_mt[0]} "train" "w"
+#    python extract-features-parallel.py ${datasets[2]} ${h_mt[2]} ${h_mt[3]} "train" "pos"
+#    python extract-features-parallel.py ${datasets[3]} ${h_mt[3]} ${h_mt[2]} "train" "pos"
+    
+#    python extract-features.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "train"
+#    python extract-features.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "train"
 
-    #generate-csv.perl
+    ./generate-csv.perl "features/train_scores_feat_h" 1 "features/train_scores_feat_mt" 0 "features/"
 fi
 ############################################
 
@@ -64,10 +68,9 @@ fi
 ############################################
 ## Classify: SVM
 ############################################
-if [ "$FIRST_STEP" -eq 4 ]
+if [ "$FIRST_STEP" -le 4 ]
   then
-    echo "Meh"
-    #classify.py
+    python classify.py "features/features.csv"
 fi
 ############################################
 

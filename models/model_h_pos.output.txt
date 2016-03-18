@@ -42,3 +42,15 @@ PPL net: 9.655316
 iter: 10
 valid log probability: -39416.579118
 PPL net: 9.590269
+
+iter: 10
+valid log probability: -38905.576895
+PPL net: 9.594945
+
+iter: 11
+valid log probability: -38850.932393
+PPL net: 9.564520
+
+iter: 11
+valid log probability: -38835.636113
+PPL net: 9.556020
