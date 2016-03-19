@@ -105,50 +105,7 @@ def evaluate_svm_model(tags, predictions):
     print("Recall: {}".format(recall))
 
 
-# CLASSIFIERS
-
-def svm_classifier(X, y):
-    # Input Format should be X : [n_samples, n_features] , y : [n_samples, 1]
-
-    classifier = svm.SVC(verbose=1)
-    classifier.fit(X, y)
-    from sklearn.externals import joblib
-    joblib.dump(classifier, 'models/svm-model.pkl')
-
-
-
-def mlp_classifier(X, y, val=None, n_epochs=20, bsize=5):
-    '''
-    :param X: numpy array [n_samples, n_features] (input features)
-    :param y: numpy array [n_samples, 1] (tags)
-    :param val: tuple of two numpy arrays (X, y) corrreponding to the validation data
-    :return:
-    '''
-    # Uses Keras Library (see keras.io for more details)
-    # Input Format should be X : [n_samples, n_features] , y : [n_samples, 1]
-    # ATTENTION: Inputs should be normalized for better results!!!
-
-    model = Sequential()
-    model.add(Dense(50, input_dim=X.shape[1], activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(50, activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(1, activation='sigmoid'))
-
-    model.compile(loss='binary_crossentropy', optimizer='rmsprop')
-
-    if val is None:
-        model.fit(X, y, nb_epoch=n_epochs, batch_size=bsize, verbose=1,
-                  validation_split=0.2, shuffle=True, callbacks=[EarlyStopping(patience=5)])
-    else:
-        assert isinstance(val, tuple)
-        model.fit(X, y, nb_epoch=n_epochs, batch_size=bsize, verbose=1,
-                  validation_data=val, shuffle=True, callbacks=[EarlyStopping(patience=5)])
-
-    yaml_string = model.to_yaml()
-    open('models/mlp_architecture.yaml', 'w').write(yaml_string)
-    model.save_weights('models/mlp_model_weights.h5', overwrite=True)
-
+# PREDICTIONS
 def mlp_predict(X, bsize=5):
     '''
     :param X: numpy array [n_samples, n_features] (input features)
@@ -160,7 +117,7 @@ def mlp_predict(X, bsize=5):
     model = model_from_yaml(open('models/mlp_architecture.yaml').read())
     model.load_weights('models/mlp_model_weights.h5')
 
-    predictions = model.predict(X, batch_size=bsize, verbose=1)
+    predictions = model.predict_classes(X, batch_size=bsize, verbose=1)
 
     return predictions
 
@@ -173,37 +130,15 @@ def svm_predict(X):
     return predictions
 
 
-#path = sys.argv[1]
-path = "features/features_train.csv"
+path = sys.argv[1]
 features, tags = open_csv(path)
 features = normalize(features)
 
-
-print "Building Deep NN Classifier Model"
-mlp_classifier(features, tags, bsize=50)
-print "Predicting with Deep NN Classifier"
+print("Predicting with Deep NN Classifier")
 predictions = mlp_predict(features)
-print predictions
+print(predictions)
 evaluate_model(tags, predictions)
 
-'''
-from matplotlib import pyplot
-T=[]
-F=[]
-for i in tags:
-    if tags[i] == 1:
-        T.append(features[i, :])
-    else:
-        F.append(features[i, :])
-
-T = np.asarray(T)
-F = np.asarray(F)
-
-pyplot.plot()
-'''
-
-print "Building SVM Model"
-svm_classifier(features, tags)
 print("Predicting with svm")
 predictions = svm_predict(features)
 print(predictions)

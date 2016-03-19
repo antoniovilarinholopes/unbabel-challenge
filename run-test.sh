@@ -36,7 +36,7 @@ fi
 ############################################
 if [ "$FIRST_STEP" -le 2 ]
   then
-    python3 classify.py "features/features_test.csv"
+    python3 evaluate-model.py "features/features_test.csv"
 fi
 ############################################
 
