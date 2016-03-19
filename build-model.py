@@ -47,6 +47,9 @@ def svm_classifier(X, y):
 
     classifier = svm.SVC(verbose=1)
     classifier.fit(X, y)
+    from sklearn.externals import joblib
+    joblib.dump(classifier, 'models/svm-model.pkl')   
+ 
 
 
 def mlp_classifier(X, y, val=None, n_epochs=20, bsize=5):
@@ -102,5 +105,6 @@ def mlp_predict(X, bsize=5):
 path = sys.argv[1]
 features, tags = open_csv(path) # Fake data for now
 mlp_classifier(features, tags, n_epochs=25)
+svm_classifier(features, tags)
 
 
