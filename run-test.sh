@@ -23,10 +23,10 @@ if [ "$FIRST_STEP" -le 1 ]
 #    python extract-features-parallel.py ${datasets[2]} ${h_mt[2]} ${h_mt[3]} "test" "pos"
 #    python extract-features-parallel.py ${datasets[3]} ${h_mt[3]} ${h_mt[2]} "test" "pos"
     
-    python extract-features.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "test"
-    python extract-features.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "test"
+#    python extract-features.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "test"
+#    python extract-features.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "test"
 
-    ./generate-csv.perl "features/test_scores_feat_h" 1 "features/test_scores_feat_mt" 0 "features/"
+    ./generate-csv.perl "features/test_scores_feat_h" 1 "features/test_scores_feat_mt" 0 "features/" "test"
 fi
 ############################################
 

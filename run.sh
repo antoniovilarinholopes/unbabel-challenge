@@ -60,7 +60,7 @@ if [ "$FIRST_STEP" -le 3 ]
 #    python extract-features.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "train"
 #    python extract-features.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "train"
 
-    ./generate-csv.perl "features/train_scores_feat_h" 1 "features/train_scores_feat_mt" 0 "features/"
+    ./generate-csv.perl "features/train_scores_feat_h" 1 "features/train_scores_feat_mt" 0 "features/" "train"
 fi
 ############################################
 
@@ -70,7 +70,7 @@ fi
 ############################################
 if [ "$FIRST_STEP" -le 4 ]
   then
-    python3 build-model.py "features/features.csv"
+    python3 build-model.py "features/features_train.csv"
 fi
 ############################################
 

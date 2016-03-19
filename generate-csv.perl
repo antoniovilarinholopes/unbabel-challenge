@@ -13,7 +13,7 @@ binmode(STDOUT, ":utf8");
 binmode(STDERR, ":utf8");
 
 
-my ($featset_1, $class_1, $featset_2, $class_2, $out_dir) = @ARGV;
+my ($featset_1, $class_1, $featset_2, $class_2, $out_dir, $train_test) = @ARGV;
 
 -e $featset_1 or die "Featureset_1 is necessary, please provide it.$!";
 -e $featset_2 or die "Featureset_2 is necessary, please provide it.$!";
@@ -42,7 +42,7 @@ close DATASET;
 
 ######Write into a file##########
 print STDERR "Writting total featset\n";
-my $feat_file = "$out_dir/features.csv";
+my $feat_file = "$out_dir/features_$train_test.csv";
 
 open(FEATSET, ">:encoding(UTF-8)" ,$feat_file) or die "Could not open file $feat_file. $!";
 my $header = shift(@feat_set_1);

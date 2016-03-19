@@ -22,7 +22,7 @@ def open_csv(file_path):
     raw_data = raw_data[1:]
     random.shuffle(raw_data)
     random.shuffle(raw_data)
-    random.shuffle(raw_data)
+#    random.shuffle(raw_data)
     raw_data = np.array(raw_data)
     features = raw_data[:, :-1]
     tags = raw_data[:, -1]
@@ -61,9 +61,10 @@ def mlp_classifier(X, y, val=None, n_epochs=20, bsize=5):
     # ATTENTION: Inputs should be normalized for better results!!!
 
     model = Sequential()
-    model.add(Dense(64, input_dim=X.shape[1], init='uniform', activation='relu'))
+    print(X.shape[1])
+    model.add(Dense(50, input_dim=X.shape[1], init='uniform', activation='relu'))
     model.add(Dropout(0.2))
-    model.add(Dense(64, activation='relu'))
+    model.add(Dense(50, activation='relu'))
     model.add(Dropout(0.2))
     model.add(Dense(1, activation='sigmoid'))
 
@@ -100,6 +101,6 @@ def mlp_predict(X, bsize=5):
 
 path = sys.argv[1]
 features, tags = open_csv(path) # Fake data for now
-mlp_classifier(features, tags)
+mlp_classifier(features, tags, n_epochs=25)
 
 

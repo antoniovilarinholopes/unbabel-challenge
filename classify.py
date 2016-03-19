@@ -1,5 +1,6 @@
 import csv
 import os
+import random
 import numpy as np
 import sys
 from sklearn import svm
@@ -17,7 +18,8 @@ def open_csv(file_path):
         csv_reader = csv.reader(fid)
         for row in csv_reader:
             raw_data.append(row)
-
+    raw_data = raw_data[1:]
+    random.shuffle(raw_data) 
     raw_data = np.array(raw_data)
     features = raw_data[:, :-1]
     tags = raw_data[:, -1]
@@ -39,25 +41,33 @@ def evaluate_model(tags, predictions):
     t_n = 0
     f_p = 0
     f_n = 0
-
     for idx in range(len(tags)):
-        if(tags[idx] == 1 && predictions[idx] == 1):
+#        print("Tags: {}, Pred: {}".format(tags[idx], predictions[idx]))
+        if(tags[idx] == '1' and predictions[idx] == 1):
             t_p = t_p + 1
-        elif(tags[idx] == 0 && predictions[idx] == 0):
+        elif(tags[idx] == '0' and predictions[idx] == 0):
             t_n = t_n + 1
-        elif(tags[idx] == 0 && predictions[idx] == 1):
+        elif(tags[idx] == '0' and predictions[idx] == 1):
             f_p = f_p + 1
         else:
             f_n = f_n + 1
 
+    precision = 0
+    if((t_p + f_p) > 0):
+        precision = t_p/(t_p + f_p)
+    
+    accuracy = 0
+    if((t_p + f_p + t_n + f_n) > 0):
+        accuracy = (t_p + t_n)/(t_p + t_n + f_p + f_n)
+    
+    recall = 0
+    if((t_p + f_n) > 0):
+        recall = t_p/(t_p + f_n)
 
-     precision = t_p / (t_p + f_p)
-     accuracy = (t_p + t_n) / (t_p + t_n + f_p + f_n)
-     recall = t_p / (t_p + f_n) 
      
-     print("Precision: {}".format(precision))
-     print("Accuracy: {]".format(accuracy))
-     print("Recall: {}".format(recall))
+    print("Precision: {}".format(precision))
+    print("Accuracy: {}".format(accuracy))
+    print("Recall: {}".format(recall))
 
 
 # CLASSIFIERS
@@ -73,7 +83,7 @@ def mlp_predict(X, bsize=5):
     model = model_from_yaml(open('models/mlp_architecture.yaml').read())
     model.load_weights('models/mlp_model_weights.h5')
 
-    predictions = model.predict(X, batch_size=bsize, verbose=1)
+    predictions = model.predict_classes(X, batch_size=bsize, verbose=1)
 
     return predictions
 
@@ -81,9 +91,4 @@ def mlp_predict(X, bsize=5):
 path = sys.argv[1]
 features, tags = open_csv(path) # Fake data for now
 predictions = mlp_predict(features)
-
 evaluate_model(tags, predictions)
-
-
-
-
