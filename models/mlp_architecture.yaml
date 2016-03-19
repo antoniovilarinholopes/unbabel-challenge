@@ -8,17 +8,17 @@ layers:
   b_regularizer: null
   cache_enabled: true
   custom_name: dense
-  init: uniform
+  init: glorot_uniform
   input_dim: 4
   input_shape: !!python/tuple [4]
   name: Dense
   output_dim: 50
   trainable: true
-- {cache_enabled: true, custom_name: dropout, name: Dropout, p: 0.2, trainable: true}
+- {cache_enabled: true, custom_name: dropout, name: Dropout, p: 0.1, trainable: true}
 - {W_constraint: null, W_regularizer: null, activation: relu, activity_regularizer: null,
   b_constraint: null, b_regularizer: null, cache_enabled: true, custom_name: dense,
   init: glorot_uniform, input_dim: null, name: Dense, output_dim: 50, trainable: true}
-- {cache_enabled: true, custom_name: dropout, name: Dropout, p: 0.2, trainable: true}
+- {cache_enabled: true, custom_name: dropout, name: Dropout, p: 0.1, trainable: true}
 - {W_constraint: null, W_regularizer: null, activation: sigmoid, activity_regularizer: null,
   b_constraint: null, b_regularizer: null, cache_enabled: true, custom_name: dense,
   init: glorot_uniform, input_dim: null, name: Dense, output_dim: 1, trainable: true}
