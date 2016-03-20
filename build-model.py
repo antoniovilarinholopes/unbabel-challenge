@@ -36,75 +36,6 @@ def normalize(a):
     c = np.divide(b, std)
 
     return c
-
-def evaluate_model(tags, predictions):
-    t_p = 0
-    t_n = 0
-    f_p = 0
-    f_n = 0
-    for idx in range(len(tags)):
-        # print("Tags: {}, Pred: {}".format(tags[idx], predictions[idx]))
-        if(tags[idx] == 1 and predictions[idx] == 1):
-            t_p += 1
-        elif(tags[idx] == 0 and predictions[idx] == 0):
-            t_n += 1
-        elif(tags[idx] == 0 and predictions[idx] == 1):
-            f_p += 1
-        else:
-            f_n += 1
-
-    precision = 0
-    if (t_p + f_p) > 0:
-        precision = float(t_p)/(t_p + f_p)
-    
-    accuracy = 0
-    if (t_p + f_p + t_n + f_n) > 0:
-        accuracy = float((t_p + t_n))/(t_p + t_n + f_p + f_n)
-    
-    recall = 0
-    if (t_p + f_n) > 0:
-        recall = float(t_p)/(t_p + f_n)
-
-     
-    print("Precision: {}".format(precision))
-    print("Accuracy: {}".format(accuracy))
-    print("Recall: {}".format(recall))
-
-
-def evaluate_svm_model(tags, predictions):
-    t_p = 0
-    t_n = 0
-    f_p = 0
-    f_n = 0
-    for idx in range(len(tags)):
-        # print("Tags: {}, Pred: {}".format(tags[idx], predictions[idx]))
-        if(tags[idx] == 1 and predictions[idx] == 1):
-            t_p += 1
-        elif(tags[idx] == 0 and predictions[idx] == 0):
-            t_n += 1
-        elif(tags[idx] == 0 and predictions[idx] == 1):
-            f_p += 1
-        else:
-            f_n += 1
-
-    precision = 0.
-    if (t_p + f_p) > 0:
-        precision = float(t_p)/(t_p + f_p)
-    
-    accuracy = 0.
-    if (t_p + f_p + t_n + f_n) > 0:
-        accuracy = float((t_p + t_n))/(t_p + t_n + f_p + f_n)
-    
-    recall = 0.
-    if (t_p + f_n) > 0:
-        recall = float(t_p)/(t_p + f_n)
-
-     
-    print("Precision: {}".format(precision))
-    print("Accuracy: {}".format(accuracy))
-    print("Recall: {}".format(recall))
-
-
 # CLASSIFIERS
 
 def svm_classifier(X, y):
@@ -129,10 +60,10 @@ def mlp_classifier(X, y, val=None, n_epochs=20, bsize=5):
     # ATTENTION: Inputs should be normalized for better results!!!
 
     model = Sequential()
-    model.add(Dense(50, input_dim=X.shape[1], activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(50, activation='relu'))
-    model.add(Dropout(0.1))
+    model.add(Dense(64, input_dim=X.shape[1], activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dropout(0.2))
     model.add(Dense(1, activation='sigmoid'))
 
     model.compile(loss='binary_crossentropy', optimizer='rmsprop')
@@ -153,9 +84,9 @@ def mlp_classifier(X, y, val=None, n_epochs=20, bsize=5):
 path = sys.argv[1]
 features, tags = open_csv(path)
 features = normalize(features)
-
+#print(features)
 print("Building Deep NN Classifier Model")
-mlp_classifier(features, tags, bsize=50)
+mlp_classifier(features, tags)
 
 print("Building SVM Model")
 svm_classifier(features, tags)
