@@ -57,9 +57,10 @@ for idx in range(len(dataset)):
     sentence = dataset[idx]
     #sentence = dataset[idx].replace('"', '\\\"')
     #sentence = sentence.replace("'", "\\\'")
-    sentence = sentence.split(' ')
-    sentence_length[idx] = len(sentence)
+    #sentence = sentence.split(' ')
+    #sentence_length[idx] = len(sentence)
     import re
+    sentence_length[idx] = len([word for word in sentence.split(' ') if re.match("\w+",word, re.U)])
     number_of_prep[idx] = len(re.findall('sp[0C][0M][0S]',dataset_pos[idx]))
     import tempfile
 
