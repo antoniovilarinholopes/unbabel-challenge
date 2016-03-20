@@ -47,10 +47,11 @@ my $feat_file = "$out_dir/features_$train_test.csv";
 open(FEATSET, ">:encoding(UTF-8)" ,$feat_file) or die "Could not open file $feat_file. $!";
 my $header = shift(@feat_set_1);
 my $header_2 = shift(@feat_set_2);
+$header_2 =~ s/\r//g;
 print "Headers not equal $header : $header_2\n" if($header ne $header_2);
 print FEATSET "$header, class";
 print FEATSET "\n";
 foreach my $line (@feat_set_1) { print FEATSET "$line,$class_1"; print FEATSET "\n";}
-foreach my $line (@feat_set_1) { print FEATSET "$line,$class_2"; print FEATSET "\n";}
+foreach my $line_2 (@feat_set_2) { $line_2 =~ s/\r//g; print FEATSET "$line_2,$class_2"; print FEATSET "\n";}
 close FEATSET;
 ########################################
