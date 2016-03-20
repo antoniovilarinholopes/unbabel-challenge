@@ -30,35 +30,37 @@ def read_datasets(file_path_local, file_path_local_pos):
     return dataset, dataset_pos
 
 
-def datasets_to_file(dataset, dataset2, dataset_pos, dataset_pos2, sentence_length, header, destination):
+def datasets_to_file(dataset, dataset2, dataset_pos, dataset_pos2, sentence_length, num_prep, header, destination):
 #def datasets_to_file(dataset, dataset_pos, header, destination):
 
     with open(destination, 'w') as f:
         f.write(header + '\n')
         for idx in range(len(dataset)):
-            f.write(dataset[idx] + ',' + dataset2[idx] + ',' + dataset_pos[idx] + ',' + dataset_pos2[idx] + ',' + sentence_length[idx] + '\n')
+            #f.write(dataset[idx] + ',' + dataset2[idx] + ',' + dataset_pos[idx] + ',' + dataset_pos2[idx] + ',' + sentence_length[idx] + ',' + num_prep +'\n')
+            f.write('{},{},{},{},{},{}\n'.format(dataset[idx], dataset2[idx], dataset_pos[idx], dataset_pos2[idx], sentence_length[idx], num_prep[idx]))
 
 
 print("Reading datasets:" + file_path + "," + file_path_pos)
 dataset, dataset_pos = read_datasets(file_path, file_path_pos)
 
-print("Running rnnlm tool to obtain train scores")
+print("Extracting features")
 
 features = range(len(dataset))
 features_pos = range(len(dataset_pos))
 features_2 = range(len(dataset))
 features_pos_2 = range(len(dataset_pos))
 sentence_length = range(len(dataset_pos))
+number_of_prep = range(len(dataset_pos))
 
-
-#TODO length of sentence
 
 for idx in range(len(dataset)):
     sentence = dataset[idx]
     #sentence = dataset[idx].replace('"', '\\\"')
     #sentence = sentence.replace("'", "\\\'")
     sentence = sentence.split(' ')
-    sentence_length[idx] = len(sentence)    
+    sentence_length[idx] = len(sentence)
+    import re
+    number_of_prep[idx] = len(re.findall('sp[0C][0M][0S]',dataset_pos[idx]))
     import tempfile
 
     ############### For me vs me ############### 
@@ -108,7 +110,7 @@ for idx in range(len(dataset)):
 
 #    print("Current index {}".format(idx))
 
-file_to_write = 'features/{}_scores_feat_{}'.format(train_test, src)
-header = 'f_wh,f_wmt,f_posh,f_posmt,length'
-datasets_to_file(features, features_2, features_pos, features_pos_2, sentence_length, header, file_to_write)
+file_to_write = 'features_syntactic/{}_scores_feat_{}'.format(train_test, src)
+header = 'f_wh,f_wmt,f_posh,f_posmt,length,num_prep'
+datasets_to_file(features, features_2, features_pos, features_pos_2, sentence_length, number_of_prep, header, file_to_write)
 

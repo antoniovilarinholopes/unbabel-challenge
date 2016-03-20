@@ -57,10 +57,11 @@ if [ "$FIRST_STEP" -le 3 ]
 #    python extract-features-parallel.py ${datasets[2]} ${h_mt[2]} ${h_mt[3]} "train" "pos"
 #    python extract-features-parallel.py ${datasets[3]} ${h_mt[3]} ${h_mt[2]} "train" "pos"
     
-#    python extract-features.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "train"
-#    python extract-features.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "train"
+    python extract-features-syntactic.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "train"
+    python extract-features-syntactic.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "train"
 
-    ./generate-csv.perl "features/train_scores_feat_h" 1 "features/train_scores_feat_mt" 0 "features/" "train"
+    ./generate-csv.perl "features_syntactic/train_scores_feat_h" 1 "features_syntactic/train_scores_feat_mt" 0 "features_syntactic/" "train"
+    #./generate-csv.perl "features/train_scores_feat_h" 1 "features/train_scores_feat_mt" 0 "features/" "train"
 fi
 ############################################
 
