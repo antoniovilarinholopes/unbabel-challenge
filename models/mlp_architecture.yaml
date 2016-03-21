@@ -9,8 +9,8 @@ layers:
   cache_enabled: true
   custom_name: dense
   init: glorot_uniform
-  input_dim: 4
-  input_shape: !!python/tuple [4]
+  input_dim: 6
+  input_shape: !!python/tuple [6]
   name: Dense
   output_dim: 64
   trainable: true

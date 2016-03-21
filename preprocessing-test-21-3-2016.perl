@@ -15,7 +15,9 @@ binmode(STDERR, ":utf8");
 
 my ($dataset) = @ARGV;
 
-my $outdir = "processed_dataset";
+my $outdir = "blind_test_dataset";
+
+`mkdir -p $outdir`;
 
 -e $dataset or die "Dataset is necessary, please provide it.$!";
 
@@ -24,7 +26,7 @@ my $outdir = "processed_dataset";
 my $pos_tagger_location = "/afs/l2f/home/alopes/Downloads/stanford-postagger-full-2015-12-09";
 
 my $dataset_tmp = "$outdir/test_dataset_tmp.txt";
-print STDERR "POS tagging mt_dataset\n";
+print STDERR "POS tagging dataset $dataset\n";
 `java -mx1024m -cp \"$pos_tagger_location/stanford-postagger-3.6.0.jar:$pos_tagger_location/lib/*\" edu.stanford.nlp.tagger.maxent.MaxentTagger -model $pos_tagger_location/models/spanish-distsim.tagger -sentenceDelimiter newline -textFile $dataset  > $dataset_tmp`;
 
 #########################################
