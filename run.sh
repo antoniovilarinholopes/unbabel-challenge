@@ -75,6 +75,7 @@ fi
 if [ "$FIRST_STEP" -le 4 ]
   then
     python3 build-model.py "features_syntactic/features_train.csv"
+    python3 test-decision-trees.py "features_syntactic/features_train.csv" "features_syntactic/features_test.csv"
 #    python3 build-model.py "features/features_train.csv"
 fi
 ############################################
