@@ -73,5 +73,11 @@ features = normalize(features)
 
 print("Predicting with svm")
 predictions = svm_predict(features)
+
+with open("predictions.txt",'w') as f:
+    for prediction in predictions:
+        f.write('{}\n'.format(prediction))
+    
+
 print(predictions)
 #evaluate_svm_model(tags, predictions)
