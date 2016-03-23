@@ -15,7 +15,7 @@ FIRST_STEP=$1
 if [ "$FIRST_STEP" -le 1 ]
   then
     mkdir -p "features"
-    datasets=("data/validation_h.txt" "data/validation_mt.txt" "data/validation_h_pos.txt" "data/validation_mt_pos.txt")
+    datasets=("test/processed_dataset/h_dataset.txt" "test/processed_dataset/mt_dataset.txt" "test/processed_dataset/h_dataset_pos.txt" "test/processed_dataset/mt_dataset_pos.txt")
     h_mt=("h" "mt" "h_pos" "mt_pos")
 
 #    python extract-features-parallel.py ${datasets[0]} ${h_mt[0]} ${h_mt[1]} "test" "w"
@@ -31,7 +31,7 @@ if [ "$FIRST_STEP" -le 1 ]
     python extract-features-syntactic.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "test"
     python extract-features-syntactic.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "test"
 
-    ./generate-csv.perl "features_syntactic/test_scores_feat_h" 1 "features_syntactic/test_scores_feat_mt" 0 "features_syntactic/" "test"
+    ./generate-csv.perl "test/features_syntactic/test_scores_feat_h" 1 "test/features_syntactic/test_scores_feat_mt" 0 "test/features_syntactic/" "test"
 
 fi
 ############################################

@@ -48,7 +48,7 @@ fi
 
 if [ "$FIRST_STEP" -le 3 ]
   then
-    mkdir -p "features"
+    mkdir -p "features_ppl"
     datasets=("data/train_h.txt" "data/train_mt.txt" "data/train_h_pos.txt" "data/train_mt_pos.txt")
     h_mt=("h" "mt" "h_pos" "mt_pos")
 
@@ -60,10 +60,12 @@ if [ "$FIRST_STEP" -le 3 ]
 #    python extract-features.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "train"
 #    python extract-features.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "train"
 
-    python extract-features-syntactic.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "train"
-    python extract-features-syntactic.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "train"
+#    python extract-features-syntactic.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "train"
+#    python extract-features-syntactic.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "train"
 
-    ./generate-csv.perl "features_syntactic/train_scores_feat_h" 1 "features_syntactic/train_scores_feat_mt" 0 "features_syntactic/" "train"
+#    python extract-features-ppl.py ${datasets[0]} ${datasets[2]} ${h_mt[0]} ${h_mt[1]} "train"
+    python extract-features-ppl.py ${datasets[1]} ${datasets[3]} ${h_mt[1]} ${h_mt[0]} "train"
+    ./generate-csv.perl "features_ppl/train_scores_feat_h" 1 "features_ppl/train_scores_feat_mt" 0 "features_ppl/" "train"
     #./generate-csv.perl "features/train_scores_feat_h" 1 "features/train_scores_feat_mt" 0 "features/" "train"
 fi
 ############################################
@@ -74,8 +76,8 @@ fi
 ############################################
 if [ "$FIRST_STEP" -le 4 ]
   then
-    python3 build-model.py "features_syntactic/features_train.csv"
-    python3 test-decision-trees.py "features_syntactic/features_train.csv" "features_syntactic/features_test.csv"
+    python3 build-model.py "features_ppl/features_train.csv"
+    python3 test-decision-trees.py "features_ppl/features_train.csv" "features_ppl/features_test.csv"
 #    python3 build-model.py "features/features_train.csv"
 fi
 ############################################
